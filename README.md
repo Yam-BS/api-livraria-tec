@@ -24,13 +24,15 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <li><i>Spring Boot DevTools</i></li>
   <li><i>Lombok</i></li>
   <li><i>Spring Web</i></li>
+  <li><i>Insomnia</i></li>
 </ul>
 
 <h2>&#x1F477;&#x1F3FE; Construção do projeto passo a passo</h2>
 
-<h3> - Iniciando os trabalhos</h3>
+<h3>1 - CRUD da API RESTful</h3>
 
-<p></p>
+<h4>1.1 - Cadastro</h4>
+<p>O primeiro passo depois da configuração inicial foi implementar um sistema de cadastro de livros na API. Optei por usar o padrão DTO para representar os dados que chegam na API já que quero filtrar quais dados serão transmitidos. Fiz uso dos Records para setar os campos que desejo receber.</p>
 
 <div align="center">
   <img alt="" src=""/>
