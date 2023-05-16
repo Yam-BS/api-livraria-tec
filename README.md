@@ -35,8 +35,8 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
 <p>O primeiro passo depois da configuração inicial foi implementar um sistema de cadastro de livros na API. Optei por usar o padrão DTO para representar os dados que chegam na API já que quero filtrar quais dados serão transmitidos. Fiz uso dos Records para setar os campos que desejo receber.</p>
 
 <div align="center">
-  <img alt="" src=""/>
-  <p></p>
+  <img src="img/cadastro.png" width="500px" heigth="500px"/>
+  <p>Ainda não estamos trabalhando com banco de dados. Mas logo logo iremos fazê-lo :)</p>
 </div>
 
 
