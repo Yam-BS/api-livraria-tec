@@ -42,19 +42,27 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <p>Ainda não estamos trabalhando com banco de dados. Mas logo logo iremos fazê-lo :)</p>
 </div>
 
-<h4>1.1.1 - Conectando ao banco de dados</h4>
+<h4>1.1.1 - Conexão com banco de dados</h4>
 <p>Para fazer a persistência foi necessário adicinar as dependências do Spring Data JPA e do banco de dados MySQL. Utiliei o padrão Repository para lidar com os dados. Assim não precisei me preocupar em utilizar diretamente a API da JPA. Uma ferramenta muito interessante que descobri há pouco tempo foi o Flyway. Ele me permite fazer as Migrations, que são arquivos criados dentro do projeto onde escrevemos comandos SQL para serem executados no banco de dados.</p>
 
 <div align="center">
-  <img alt="Imagem de exemplo - Persistência" width="500px" heigth="500px"/>
+  <img alt="Imagem de exemplo - Persistência" src="" width="500px" heigth="500px"/>
   <p></p>
 </div>
 
-<h4>1.1.2 - Fazendo validações</h4>
+<h4>1.1.2 - Validações</h4>
 <p>Fazer as validações se tornou bastante simples com o uso do Bean Validation a partir de anotações. Ele verifica se as informações que chegam estão de acordo com as anotações.</p>
 
 <div align="center">
   <img alt="Imagem de exemplo - Validações" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
+<h4>1.2 - Listagem</h4>
+<p>A primeira ideia no método responsável por listar os livros cadastrados foi que ele retornasse um List de livros. Porém, resolvi mais uma vez utilizar o padrão DTO. Já que eu não queria utilizar todos os dados da entidade Livro, optei por criar um DTO que traz apenas os dados desejados. Nesse sentido, vale destacar mais uma vez a flexibilidade que o padrão DTO proporciona. Outra decisão importante foi a de retornar Page em vez de List. Fazer isso me ajudou a ter um maior controle sobre questôes referentes à paginação. Agora eu posso definir, por exemplo, a ordem padrão em que os dados serão exibidos.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Listagem" src="" width="500px" heigth="500px"/>
   <p></p>
 </div>
 
