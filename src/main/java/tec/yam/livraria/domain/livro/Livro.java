@@ -36,4 +36,18 @@ public class Livro {
         this.paginas = dados.paginas();
         this.autor = new Autor(dados.autor());
     }
+
+    public void atualizarInformacoes(DadosAtualizacaoLivro dados) {
+        if (dados.titulo() != null) {
+            this.titulo = dados.titulo();
+        }
+
+        if (dados.anoLancamento() != null) {
+            this.anoLancamento = dados.anoLancamento();
+        }
+
+        if(dados.paginas() != null) {
+            this.paginas = dados.paginas();
+        }
+    }
 }

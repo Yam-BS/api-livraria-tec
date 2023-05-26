@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import tec.yam.livraria.domain.livro.DadosCadastroLivro;
-import tec.yam.livraria.domain.livro.DadosListagemLivro;
-import tec.yam.livraria.domain.livro.Livro;
-import tec.yam.livraria.domain.livro.LivroRepository;
+import tec.yam.livraria.domain.livro.*;
 
 import java.util.List;
 
@@ -31,6 +28,13 @@ public class LivroController {
     @GetMapping
     public Page<DadosListagemLivro> listar(@PageableDefault(sort = {"titulo"}) Pageable paginacao) {
         return repository.findAll(paginacao).map(DadosListagemLivro::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados) {
+        Livro livro = repository.getReferenceById(dados.id());
+        livro.atualizarInformacoes(dados);
     }
 
 }

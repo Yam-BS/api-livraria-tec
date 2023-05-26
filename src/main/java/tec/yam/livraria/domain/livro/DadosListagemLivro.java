@@ -5,6 +5,7 @@ import tec.yam.livraria.domain.autor.Autor;
 import java.time.Year;
 
 public record DadosListagemLivro(
+        Long id,
         String titulo,
         Genero genero,
         Year anoLancamento,
@@ -13,6 +14,6 @@ public record DadosListagemLivro(
 ) {
 
     public DadosListagemLivro(Livro livro) {
-        this(livro.getTitulo(), livro.getGenero(), livro.getAnoLancamento(), livro.getPaginas(), livro.getAutor());
+        this(livro.getId(), livro.getTitulo(), livro.getGenero(), livro.getAnoLancamento(), livro.getPaginas(), livro.getAutor());
     }
 }
