@@ -66,6 +66,14 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <p></p>
 </div>
 
+<h4>1.3 - Atualização de dados</h4>
+<p>Criar a funcionalidade de atualizar os dados dos livros foi bastante simples. Primeiro tive que decidir quais dados dos livros seriam "atualizáveis". Ao longo do tempo alguns livros vão recebendo novas edições. Isso geralmente afeta o título do livro (que recebe o número da nova edição), o número de páginas e o ano de lançamento (que passa a ser o ano em que determinada edição foi lançada). Já que eu não quero deixar todos os atributos de um livro passíveis de receber atualização, criei um DTO que recebe apenas os dados mencionados acima, além do ID para identificar qual livro vai sofrer a atualização.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Atualização" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
 
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
