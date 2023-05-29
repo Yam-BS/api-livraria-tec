@@ -74,6 +74,14 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <p></p>
 </div>
 
+<h4>1.4 - Excusão lógica</h4>
+<p>Antes mesmo de implementar a funcionalidade de exclusão, tive que escolher o tipo de exclusão que faria mais sentido para o negócio. Exclusão  tradicional? Isso significa excluir o dado (no caso o livro) do banco de dados. Acredito que para o cliente isso não seria tão interessante. Ele poderia fazer a exclusão do livro quando o mesmo não estivese mais disponível na livraria. Mas e se depois de algum tempo esse livro voltasse a fazer parte do estoque? O cliente teria que adicionar os dados novamente no banco? Dá para evitar esse tipo de trabalho! A solução se chama exclusão lógica. Nela, em vez de exluir o dado do banco, apenas tornamos ele inativo. Para isso, tive que adicionar uma coluna na tabela de livros que basicamente me diz se o livro está disponível ou não. Além disso foi necessário alterar o método que lista os livros para que ele apenas exibisse os livros disponíveis naquele momento.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Exclusão" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
 
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
