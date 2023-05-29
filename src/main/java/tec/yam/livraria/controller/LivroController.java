@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import tec.yam.livraria.domain.livro.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("livros")
@@ -27,7 +28,7 @@ public class LivroController {
 
     @GetMapping
     public Page<DadosListagemLivro> listar(@PageableDefault(sort = {"titulo"}) Pageable paginacao) {
-        return repository.findAll(paginacao).map(DadosListagemLivro::new);
+        return repository.findAllByDisponivelTrue(paginacao).map(DadosListagemLivro::new);
     }
 
     @PutMapping
@@ -35,6 +36,13 @@ public class LivroController {
     public void atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados) {
         Livro livro = repository.getReferenceById(dados.id());
         livro.atualizarInformacoes(dados);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id) {
+        Livro livro = repository.getReferenceById(id);
+        livro.excluir();
     }
 
 }

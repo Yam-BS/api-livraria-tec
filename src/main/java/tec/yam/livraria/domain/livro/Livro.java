@@ -29,12 +29,15 @@ public class Livro {
     @Embedded
     private Autor autor;
 
+    private Boolean disponivel;
+
     public Livro(DadosCadastroLivro dados) {
         this.titulo = dados.titulo();
         this.genero = dados.genero();
         this.anoLancamento = dados.anoLancamento();
         this.paginas = dados.paginas();
         this.autor = new Autor(dados.autor());
+        this.disponivel = true;
     }
 
     public void atualizarInformacoes(DadosAtualizacaoLivro dados) {
@@ -49,5 +52,9 @@ public class Livro {
         if(dados.paginas() != null) {
             this.paginas = dados.paginas();
         }
+    }
+
+    public void excluir() {
+        this.disponivel = false;
     }
 }
