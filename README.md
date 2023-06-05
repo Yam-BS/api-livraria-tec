@@ -82,6 +82,15 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <p></p>
 </div>
 
+<h3>2 - Aplicando boas práticas e protegendo a API</h3>
+
+<h4>2.1 - Padronizando retornos</h4>
+<p>O protocolo HTTP possui diversos códigos para vários cenários. Por isso fiz alguns ajustes para retornar os códigos mais adequados de acordo com a requisição. Usei a classe ResponseEntity do Spring que ajuda a controlar a resposta devolvida pelo Spring. Todos os meus métodos do controller devolvem agora um ResponseEntity. Essa classe possui alguns métodos estáticos que posso devolver conforme o que desejo.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - ResponseEntity" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
 
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
