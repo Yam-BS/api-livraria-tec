@@ -8,14 +8,18 @@ import tec.yam.livraria.domain.autor.DadosAutor;
 import java.time.Year;
 
 public record DadosCadastroLivro(
-        @NotBlank
+        @NotBlank(message = "{titulo.obrigatorio}")
         String titulo,
-        @NotNull
+
+        @NotNull(message = "{genero.obrigatorio}")
         Genero genero,
-        @NotNull
+
+        @NotNull(message = "{anoLancamento.obrigatorio}")
         Year anoLancamento,
-        @NotNull
+
+        @NotNull(message = "{paginas.obrigatorio}")
         Integer paginas,
+
         @NotNull
         @Valid
         DadosAutor autor
