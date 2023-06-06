@@ -92,6 +92,17 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <p></p>
 </div>
 
+<h4>2.2 - Tratando erros</h4>
+<p>O que fazer quando ocorre algum erro? Por exemplo, talvez um cliente desavisado faça a busca de determinado livro utilizando um ID inexistente. Em situações assim, o Spring por padrão devolve o código HTTP 500, além da stack trace informando qual exception ocorreu. Mas isso não é muito recomendado. Para que o Spring não envie a stack trace em caso de erro, adicionei a seguinte configuração no arquivo application.properties: <i>server.error.include-stacktrace=never</i>
+
+ 
+</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Classe responável pelo tratamento de erros" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
 <p>Você pode <a href="https://github.com/Yam-BS/api-livraria-tec/tree/master/src">acessar o código-fonte do projeto</a> ou <a href="https://github.com/Yam-BS/api-livraria-tec/archive/refs/heads/master.zip">baixá-lo</a></p>
