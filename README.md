@@ -28,6 +28,7 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <li><i>Spring Data JPA</i></li>
   <li><i>MySQL</i></li>
   <li><i>Flyway</i></li>
+  <li><i>Spring Security</i></li>
 </ul>
 
 <h2>&#x1F477;&#x1F3FE; Construção do projeto passo a passo</h2>
@@ -104,6 +105,14 @@ Então vamos lá: buscar um livro utilizando um ID que não existe no banco de d
 
 <div align="center">
   <img alt="Imagem de exemplo - Classe responsável pelo tratamento de erros" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
+<h4>2.3 - Trabalhando com o Spring Security</h4>
+<p>Para colocar uma camada de segurança na minha API comecei adicionando um módulo do Spring Security no projeto. A partir de agora, qualquer requisição que eu fizer à API irá retornar o código HTTP 401 (Unauthorized). Vamos começar as nossas implementações: criei a entidade usuário; utilizei migrations para criar uma nova tabela no banco de dados onde serão armazenados os usuários e suas respectivas senhas; criei um repository do usuário; criei uma classe que terá o código com a lógica de autenticação.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Spring Security" src="" width="500px" heigth="500px"/>
   <p></p>
 </div>
 
