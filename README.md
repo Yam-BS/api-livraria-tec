@@ -93,13 +93,17 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
 </div>
 
 <h4>2.2 - Tratando erros</h4>
-<p>O que fazer quando ocorre algum erro? Por exemplo, talvez um cliente desavisado faça a busca de determinado livro utilizando um ID inexistente. Em situações assim, o Spring por padrão devolve o código HTTP 500, além da stack trace informando qual exception ocorreu. Mas isso não é muito recomendado. Para que o Spring não envie a stack trace em caso de erro, adicionei a seguinte configuração no arquivo application.properties: <i>server.error.include-stacktrace=never</i>
+<p>O que fazer quando ocorre algum erro? Por exemplo, talvez um cliente desavisado faça a busca de determinado livro utilizando um ID inexistente. Em situações assim, o Spring por padrão devolve o código HTTP 500, além da stack trace informando qual exception ocorreu. Mas isso não é muito recomendado. 
 
- 
+Para que o Spring não envie a stack trace em caso de erro, adicionei a seguinte configuração no arquivo application.properties: <i>server.error.include-stacktrace=never</i>
+
+E para capturar o erro? Adicionar try-catch ao método de exibir livro na classe controller não é muito interessante. Isso porque outros métodos de outros controllers podem lançar o mesmo tipo de erro. Ou seja, eu teria try-catch espalhado em vários controllers. A solução foi criar uma classe com métodos responsáveis por tratar erros específicos. Em cima do método eu coloco o tipo de exceção que ele irá tratar.
+  
+Então vamos lá: buscar um livro utilizando um ID que não existe no banco de dados irá lançar uma <i>EntityNotFoundException</i>. Sempre que isso acontecer, o Spring pede socorro ao método que sabe tratar essa exceção.
 </p>
 
 <div align="center">
-  <img alt="Imagem de exemplo - Classe responável pelo tratamento de erros" src="" width="500px" heigth="500px"/>
+  <img alt="Imagem de exemplo - Classe responsável pelo tratamento de erros" src="" width="500px" heigth="500px"/>
   <p></p>
 </div>
 
