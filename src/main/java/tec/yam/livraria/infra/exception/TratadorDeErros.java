@@ -1,4 +1,4 @@
-package tec.yam.livraria.infra;
+package tec.yam.livraria.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
