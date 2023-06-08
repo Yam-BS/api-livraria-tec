@@ -115,7 +115,9 @@ O próximo passo foi construir o controller responsável por disparar o processo
   
 Agora vamos à classe <i>SecurityConfigurations</i>. Nela coloquei o método <i>authenticationManager()</i> anotado com <i>@Bean</i>. Foi necessário fazer isso porque o Spring não injeta de forma automática o objeto <i>AuthenticationManager</i>. O método criado informa ao Spring como fazer isso.
   
-
+Mas como vamos salvar a senha do usuário no banco de dados? Não é uma boa prática salvar em texto aberto pois é um dado sensível. A boa prática é salvar a senha em hashing. Aqui usarei o formato BCrypt de hashing da senha. Como o Spring identifica que estamos usando o BCrypt? Utilizei o método abaixo para que isso fosse possível.
+  
+Está na hora de cuidar da classe usuário. Preciso que o Spring Security identifique essa classe. Que ele saiba, por exemplo, que o atributo login é o campo login. A forma de fazer isso é implementando a interface <i>UserDetails</i> e, por consequência, os seus métodos. Fiz algumas alterações nos métodos e pronto. A classe Usuário está seguindo o padrão do Spring.
 </p>
 
 <div align="center">
