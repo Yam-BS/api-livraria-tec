@@ -109,7 +109,14 @@ Então vamos lá: buscar um livro utilizando um ID que não existe no banco de d
 </div>
 
 <h4>2.3 - Trabalhando com o Spring Security</h4>
-<p>Para colocar uma camada de segurança na minha API comecei adicionando um módulo do Spring Security no projeto. A partir de agora, qualquer requisição que eu fizer à API irá retornar o código HTTP 401 (Unauthorized). Vamos começar as nossas implementações: criei a entidade usuário; utilizei migrations para criar uma nova tabela no banco de dados onde serão armazenados os usuários e suas respectivas senhas; criei um repository do usuário; criei uma classe que terá o código com a lógica de autenticação; criei uma classe para configurar o Spring Security. Nessa classe eu desabilito a proteção contra ataques do tipo CSFR. Por que? Porque vou trabalhar com autenticação via tokens. Nesse cenário, o próprio token é uma proteção contra esses tipos de ataques. Além disso, eu desabilito o processo de autenticação padrão do Spring que é Stateful. Uma API Rest precisa ser Stateless.</p>
+<p>Para colocar uma camada de segurança na minha API comecei adicionando um módulo do Spring Security no projeto. A partir de agora, qualquer requisição que eu fizer à API irá retornar o código HTTP 401 (Unauthorized). Vamos começar as nossas implementações: criei a entidade usuário; utilizei migrations para criar uma nova tabela no banco de dados onde serão armazenados os usuários e suas respectivas senhas; criei um repository do usuário; criei uma classe que terá o código com a lógica de autenticação; criei uma classe para configurar o Spring Security. Nessa classe eu desabilito a proteção contra ataques do tipo CSFR. Por quê? Porque vou trabalhar com autenticação via tokens. Nesse cenário, o próprio token é uma proteção contra esses tipos de ataques. Além disso, eu desabilito o processo de autenticação padrão do Spring que é Stateful. Uma API Rest precisa ser Stateless.
+
+O próximo passo foi construir o controller responsável por disparar o processo de autenticação. Esse controller possui o método de efetuar login que recebe um DTO com os dados de autenticação. No nosso caso, login e senha. No controller também precisei usar a classe <i>AuthenticationManager</i>, do Spring. Essa classe possui o método <i>authenticate()</i> que recebe como parâmetro um objeto do tipo <i>UsernameAuthenticationToken</i> e devolve o objeto que representa o usuário autenticado no sistema. No fim, retornei o método HTTP 200 OK.
+  
+Agora vamos à classe <i>SecurityConfigurations</i>. Nela coloquei o método <i>authenticationManager()</i> anotado com <i>@Bean</i>. Foi necessário fazer isso porque o Spring não injeta de forma automática o objeto <i>AuthenticationManager</i>. O método criado informa ao Spring como fazer isso.
+  
+
+</p>
 
 <div align="center">
   <img alt="Imagem de exemplo - Spring Security" src="" width="500px" heigth="500px"/>
