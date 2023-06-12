@@ -128,7 +128,16 @@ Está na hora de cuidar da classe usuário. Preciso que o Spring Security identi
 <h4>2.4 - Gerando Tokens JWT</h4>
 <p>Agora o nosso foco será ter o token no retorno da requisição. 
 
-Antes de tudo, vamos adicionar a biblioteca Auth0 ao projeto. Ela será utilizada para gerar o token, seguindo o padrão JWT. Peguei essa biblioteca no <a href="https://jwt.io/">site do JWT</a>.</p>
+Antes de tudo, vamos adicionar a biblioteca Auth0 ao projeto. Ela será utilizada para gerar o token, seguindo o padrão JWT. Peguei essa biblioteca no <a href="https://jwt.io/">site do JWT</a>.
+
+Criei a classe <i>TokenService</i> que irá fazer a geração, validação e o que mais estiver relacionado aos tokens. Já que a classe representa um serviço, passei a anotação <i>@Service</i>. Ela possui o método <i>gerarToken()</i> que irá retornar o token em formato de String. <a href="https://github.com/auth0/java-jwt">Neste repositório do JWT</a> encontramos a seção "Create a JWT" que possui um trecho de código Java que serve para gerar o token. Copiei e colei dentro do meu método trocando o algoritmo padrão de assinatura (RS256) pelo HMAC256. Como parâmetro passei uma senha, o que é indispensável para fazer a assinatura do token. A boa prática é que a senha esteja em uma variável de ambiente para que não fique exposta em código aberto.
+  
+O ideal é que os tokens da API tenham data de validade. Chamei o método <i>withExpiresAt()</i>, passando como parâmetro <i>dataExpiracao()</i> o que dá uma validade de duas horas ao token gerado.
+  
+Criei o DTO <i>DadosTokenJWT</i> para encapsular o token. Não quero que ele seja devolvido "solto" no corpo da resposta.
+  
+Vamos voltar à classe <i>AutenticacaoController</i>. Só relembrando: é aqui que chegam as requisições de login. Nela usei o DTO do Spring <i>UsernamePasswordAuthenticationToken</i>, passando o login e a senha que chegam e disparei o processo de autenticação. Após isso, passei o usuário autenticado como parâmetro para gerar o token. Com o token gerado, bastou retorná-lo no corpo da resposta. Ele veio dentro de um JSON graças ao meu DTO.
+</p>
 
 <div align="center">
   <img alt="Imagem de exemplo - Geração de tokens" src="" width="500px" heigth="500px"/>
