@@ -125,6 +125,16 @@ Está na hora de cuidar da classe usuário. Preciso que o Spring Security identi
   <p></p>
 </div>
 
+<h4>2.4 - Gerando Tokens JWT</h4>
+<p>Agora o nosso foco será ter o token no retorno da requisição. 
+
+Antes de tudo, vamos adicionar a biblioteca Auth0 ao projeto. Ela será utilizada para gerar o token, seguindo o padrão JWT. Peguei essa biblioteca no <a href="https://jwt.io/">site do JWT</a>.</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - Geração de tokens" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
 <p>Você pode <a href="https://github.com/Yam-BS/api-livraria-tec/tree/master/src">acessar o código-fonte do projeto</a> ou <a href="https://github.com/Yam-BS/api-livraria-tec/archive/refs/heads/master.zip">baixá-lo</a></p>
