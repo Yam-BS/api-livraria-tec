@@ -13,6 +13,7 @@ A API foi feita para servir uma livraria e permite o gerenciamento das suas ativ
   <li>Listagem de livros</li>
   <li>Atualização de status dos livros</li>
   <li>Exclusão dos livros</li>
+  <li>Cadastro de usuário</li>
 </ul>
 
 <h2>&#x2705 Técnicas e tecnologias utilizadas</h2>
@@ -150,6 +151,16 @@ Vamos voltar à classe <i>AutenticacaoController</i>. Só relembrando: é aqui q
 Criei a classe <i>SecurityFilter</i> que vai servir como filtro no projeto, para interceptar requisições. Essa classe possui a anotação <i>@Component</i> para que o Spring consiga carregá-la no projeto. Outra característica dessa classe é que ela estende <i>OncePerRequestFilter</i>, que por sua vez provê o método <i>doFilterInternal</i>. Isso porque eu quero que o filtro seja invocado apenas uma vez por requisição.
 
 Mas, e agora? Como meu filter vai pegar o token que vem na requisição para fazer a validação? O token vem junto da requisição, no cabeçalho "Authorization". Ainda na classe <i>SecurityFilter</i>, criei o método <i>recuperarToken</i> que vai buscar esse cabeçalho e pegar o token. Caso esse campo venha nulo, uma exceção será lançada. Caso contrário, o token irá passar por um tratamento: por padrão ele virá com a palavra "Bearer" na frente. O método <i>replace</i> da classe <i>String</i> me ajudou a removê-la. O retorno do meu método vai ser um token "limpo".
+
+Está na hora de validar o token. Na classe <i>TokenService</i> criei o método <i>getSubject</i> que receberá o token. Voltando ao <a href="https://github.com/auth0/java-jwt">repositório do JWT</a>, podemos navegar até a seção "Verify a JWT" onde encontramos um código pronto de validação de token. Copiei e colei esse código dentro do meu método, fazendo algumas adaptações ao meu projeto. Esse método será chamado na classe <i>SecurityFilter</i> para que a validação seja realizada.
+
+Precisei fazer algumas adaptações para que o Spring controle a liberação ou não das requisições. Primeiro alterei o método <i>securityFilterChain</i> da classe <i>SecurityConfigurations</i> para que o Spring saiba que a única requisição que deve ser liberada é a de login. Todas as requisições que não forem de login não passarão pelo filtro. Nesse ponto, qualquer requisição será bloqueada mesmo que eu envie junto o token. Isso acontece porque eu ainda preciso falar para o Spring que o token que está válido. Como?
+
+Primeiro foi necessário carregar o usuário do banco de dados. Para falar ao Spring considerar que esse usuário está válido, criei uma espécie de DTO que faz parte do próprio Spring passando os dados desse usuário. Passei esse DTO no método que seta o usuário logado pertencente à classe <i>SecurityContextHolder</i>.
+
+Por fim, um último ajuste. Por padrão o Spring possui um filtro que é chamado antes do meu, o que está fazendo algumas requisições ainda cairem no código HTTP 403. Assim, precisei modificar a ordem dos filtros para que o Spring chame primeiro o que configurei, verificando se o token está vindo e autenticando o usuário. Essa alteração foi feita na classe <i>SecurityConfigurations</i>, onde adicionei o método <i>addFilterBefore</i>
+
+Ufa! Finalmente! A funcionalidade de autenticação e autorização via tokens está completa!
 
 </p>
 
