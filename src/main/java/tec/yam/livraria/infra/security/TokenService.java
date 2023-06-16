@@ -1,8 +1,10 @@
 package tec.yam.livraria.infra.security;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tec.yam.livraria.domain.usuario.Usuario;
@@ -32,6 +34,19 @@ public class TokenService {
 
     private Instant dataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    public String getSubject(String tokenJWT) {
+        try {
+            Algorithm algoritmo = Algorithm.HMAC256(secret);
+            return JWT.require(algoritmo)
+                    .withIssuer("Livraria Tec")
+                    .build()
+                    .verify(tokenJWT)
+                    .getSubject();
+        } catch (JWTVerificationException exception){
+            throw new RuntimeException("Token JWT inválido ou expirado");
+        }
     }
 
 }
