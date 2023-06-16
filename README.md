@@ -144,6 +144,20 @@ Vamos voltar à classe <i>AutenticacaoController</i>. Só relembrando: é aqui q
   <p></p>
 </div>
 
+<h4>2.5 - Controlando o acesso</h4>
+<p>Agora meu cliente precisa enviar o token junto das próximas requisições para ter acesso ao controller. Para fazer esse sistema funcionar usei o conceito de <i>Filters</i>. Eles entrarão em ação antes mesmo da execução do Spring. Lá é onde decidiremos se a requisição será interrompida ou, se for o caso, chamaremos ainda outro filter. A ideia é que a requisição passe pelo filter antes de cair no controller.
+
+Criei a classe <i>SecurityFilter</i> que vai servir como filtro no projeto, para interceptar requisições. Essa classe possui a anotação <i>@Component</i> para que o Spring consiga carregá-la no projeto. Outra característica dessa classe é que ela estende <i>OncePerRequestFilter</i>, que por sua vez provê o método <i>doFilterInternal</i>. Isso porque eu quero que o filtro seja invocado apenas uma vez por requisição.
+
+Mas, e agora? Como meu filter vai pegar o token que vem na requisição para fazer a validação? O token vem junto da requisição, no cabeçalho "Authorization". Ainda na classe <i>SecurityFilter</i>, criei o método <i>recuperarToken</i> que vai buscar esse cabeçalho e pegar o token. Caso esse campo venha nulo, uma exceção será lançada. Caso contrário, o token irá passar por um tratamento: por padrão ele virá com a palavra "Bearer" na frente. O método <i>replace</i> da classe <i>String</i> me ajudou a removê-la. O retorno do meu método vai ser um token "limpo".
+
+</p>
+
+<div align="center">
+  <img alt="Imagem de exemplo - SecurityFilter" src="" width="500px" heigth="500px"/>
+  <p></p>
+</div>
+
 
 <h2>&#x1F4C1 Acesso ao projeto</h2>
 <p>Você pode <a href="https://github.com/Yam-BS/api-livraria-tec/tree/master/src">acessar o código-fonte do projeto</a> ou <a href="https://github.com/Yam-BS/api-livraria-tec/archive/refs/heads/master.zip">baixá-lo</a></p>
