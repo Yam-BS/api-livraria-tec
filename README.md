@@ -197,27 +197,46 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 <h3>2 - Aplicando boas práticas e protegendo a API</h3>
 
 <h4>2.1 - Padronizando retornos</h4>
-<p>O protocolo HTTP possui diversos códigos para vários cenários. Por isso fiz alguns ajustes para retornar os códigos mais adequados de acordo com a requisição. Usei a classe ResponseEntity do Spring que ajuda a controlar a resposta devolvida pelo Spring. Todos os meus métodos do controller devolvem agora um ResponseEntity. Essa classe possui alguns métodos estáticos que posso devolver conforme o que desejo.</p>
+<p>O protocolo HTTP possui códigos diferentes que contemplam os mais variados cenários. Pensando nisso, decidi personalizar o retorno das minhas requisições. Usei a classe <i>ResponseEntity</i> que me ajudou a ter controle sobre a resposta devolvida pelo Spring. Essa classe possui vários métodos estáticos que indicam o código HTTP a ser devolvido.</p> 
 
-<div align="center">
-  <img alt="Imagem de exemplo - ResponseEntity" src="" width="500px" heigth="500px"/>
-  <p></p>
-</div>
+<p>Vamos tomar como exemplo o método de cadastrar livros. Observe que agora ele devolve um <i>ResponseEntity</i>. Usei o método <i>created()</i> que retorna o código 201 indicando que a solicitação foi bem sucedida e levou à criação de um recurso. Além disso, seguindo uma prática bastante comum, ele irá exibir os dados do livro que acabou de ser cadastrado.</p>
+
+```
+public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados, UriComponentsBuilder uriBuilder) {
+  Livro livro = new Livro(dados);
+  repository.save(livro);
+
+  var uri = uriBuilder.path("/livros/{id}").buildAndExpand(livro.getId()).toUri();
+  return ResponseEntity.created(uri).body(new DadosDetalhamentoLivro(livro));
+}
+```
+
+<p>Agora a API não fica somente devolvendo de forma genérica o código 200 indicando que a requisição foi bem sucedida. A classe <i>ResponseEntity</i> me permitiu ser mais específico nas respostas.</p>
 
 <h4>2.2 - Tratando erros</h4>
-<p>O que fazer quando ocorre algum erro? Por exemplo, talvez um cliente desavisado faça a busca de determinado livro utilizando um ID inexistente. Em situações assim, o Spring por padrão devolve o código HTTP 500, além da stack trace informando qual exception ocorreu. Mas isso não é muito recomendado. 
+<p>Tá, mas qual é o procedimento quando ocorre algum tipo de erro? Pode acontecer, por exemplo, de um cliente desavisado buscar um livro utilizando um ID inexixtente no banco de dados. Em situações assim, o Spring por padrão devolve o código HTTP 500 indicando que o servidor encontrou uma situação inesperada que o impediu de atender à solicitação. Ele também exibe a <i>stack trace</i> que informa qual exception ocorreu. Mas isso não é recomendado pois consiste em expor informações sensíveis e desnecessárias.</p> 
 
-Para que o Spring não envie a stack trace em caso de erro, adicionei a seguinte configuração no arquivo application.properties: <i>server.error.include-stacktrace=never</i>
+<p>Comecei resolvendo esse problema. Para que o Spring não envie a stack trace em caso de erro, adicionei a seguinte configuração no arquivo <i>application.properties</i>:</p> 
 
-E para capturar o erro? Adicionar try-catch ao método de exibir livro na classe controller não é muito interessante. Isso porque outros métodos de outros controllers podem lançar o mesmo tipo de erro. Ou seja, eu teria try-catch espalhado em vários controllers. A solução foi criar uma classe com métodos responsáveis por tratar erros específicos. Em cima do método eu coloco o tipo de exceção que ele irá tratar.
-  
-Então vamos lá: buscar um livro utilizando um ID que não existe no banco de dados irá lançar uma <i>EntityNotFoundException</i>. Sempre que isso acontecer, o Spring pede socorro ao método que sabe tratar essa exceção.
-</p>
+```
+server.error.include-stacktrace=never
+```
 
-<div align="center">
-  <img alt="Imagem de exemplo - Classe responsável pelo tratamento de erros" src="" width="500px" heigth="500px"/>
-  <p></p>
-</div>
+<p>E como fiz para capturar o erro? Pensei em adicionar try-catch ao método de exibir livro na classe controller. Mas a longo prazo isso não faria sentido. Outros métodos de outros controllers podem lançar o mesmo tipo de erro. Ou seja, eu teria try-catch espalhado em vários lugares do código. A solução foi criar uma classe que centraliza os métodos responsáveis por tratar erros específicos. Em cima do método eu especifiquei o tipo de exceção que ele irá tratar.
+
+<p>Vamos voltar ao exemplo citado no início dessa seção: buscar um livro utilizando um ID que não existe no banco de dados causa uma exceção chamada <i>EntityNotFoundException</i>. Sempre que isso acontecer, o Spring procura a classe marcada com <i>@RestControllerAdvice</i> e pede socorro ao método que sabe tratar essa exceção.</p>
+
+```
+@RestControllerAdvice
+public class TratadorDeErros {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity tratarErro404() {
+        return ResponseEntity.notFound().build();
+    }
+
+}
+```
 
 <h4>2.3 - Trabalhando com o Spring Security</h4>
 <p>Para colocar uma camada de segurança na minha API comecei adicionando um módulo do Spring Security no projeto. A partir de agora, qualquer requisição que eu fizer à API irá retornar o código HTTP 401 (Unauthorized). Vamos começar as nossas implementações: criei a entidade usuário; utilizei migrations para criar uma nova tabela no banco de dados onde serão armazenados os usuários e suas respectivas senhas; criei um repository do usuário; criei uma classe que terá o código com a lógica de autenticação; criei uma classe para configurar o Spring Security. Nessa classe eu desabilito a proteção contra ataques do tipo CSFR. Por quê? Porque vou trabalhar com autenticação via tokens. Nesse cenário, o próprio token é uma proteção contra esses tipos de ataques. Além disso, eu desabilito o processo de autenticação padrão do Spring que é Stateful. Uma API Rest precisa ser Stateless.
