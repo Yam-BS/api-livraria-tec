@@ -239,7 +239,45 @@ public class TratadorDeErros {
 ```
 
 <h4>2.3 - Trabalhando com o Spring Security</h4>
-<p>Para colocar uma camada de segurança na minha API comecei adicionando um módulo do Spring Security no projeto. A partir de agora, qualquer requisição que eu fizer à API irá retornar o código HTTP 401 (Unauthorized). Vamos começar as nossas implementações: criei a entidade usuário; utilizei migrations para criar uma nova tabela no banco de dados onde serão armazenados os usuários e suas respectivas senhas; criei um repository do usuário; criei uma classe que terá o código com a lógica de autenticação; criei uma classe para configurar o Spring Security. Nessa classe eu desabilito a proteção contra ataques do tipo CSFR. Por quê? Porque vou trabalhar com autenticação via tokens. Nesse cenário, o próprio token é uma proteção contra esses tipos de ataques. Além disso, eu desabilito o processo de autenticação padrão do Spring que é Stateful. Uma API Rest precisa ser Stateless.
+<p>Estive também empenhado em adicionar uma camada de segurança na minha API. Queria implementar mecanismos para fazer o controle de acesso. Começando os trabalhos, incluí no projeto um módulo do Spring Security. Por causa disso, qualquer requisição que chega na API passa a retornar o código HTTP 401 (Unauthorized).</p>
+
+<p>Depois disso, fiz algumas implementações relacionadas à autenticação de usuários na API. A criação da entidade Usuário foi a primeira:</p>
+
+```
+// anotações omitidas...
+
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String login;
+    private String senha;
+
+}
+```
+
+<p>Para autenticar o usuário na API, precisava ter uma tabela no banco de dados responsável por armazenar os usuários e suas respectivas senhas. Criei essa tabela por meio das migrations. Além disso, criei uma entidade JPA para representar o Usuário</p>
+
+```
+create table usuarios(
+
+    id bigint not null auto_increment,
+    login varchar(100) not null,
+    senha varchar(255) not null,
+
+    primary key(id)
+);
+```
+```
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}
+```
+  
+<p>A próxima tarefa foi criar a classe que irá conter o código com a lógica de autenticação. Ela foi anotada com <i>@Service</i> para que o Spring a identifique como um componente do tipo serviço. Outro ponto importante é que ela implementa uma interface do Spring Security chamada <i>UserDetailsService</i>. Isso informa ao Spring Security que essa classe é a responsável pelo serviço de autenticação. A tal interface exigia que eu sobrescrevesse o método <i>loadUserByUsername()</i>.</p>
+  
+  
+<p>Criei uma classe para configurar o Spring Security. Nessa classe eu desabilito a proteção contra ataques do tipo CSFR. Por quê? Porque vou trabalhar com autenticação via tokens. Nesse cenário, o próprio token é uma proteção contra esses tipos de ataques. Além disso, eu desabilito o processo de autenticação padrão do Spring que é Statefull. Uma API Rest precisa ser Stateless.
 
 O próximo passo foi construir o controller responsável por disparar o processo de autenticação. Esse controller possui o método de efetuar login que recebe um DTO com os dados de autenticação. No nosso caso, login e senha. No controller também precisei usar a classe <i>AuthenticationManager</i>, do Spring. Essa classe possui o método <i>authenticate()</i> que recebe como parâmetro um objeto do tipo <i>UsernameAuthenticationToken</i> e devolve o objeto que representa o usuário autenticado no sistema. No fim, retornei o método HTTP 200 OK.
   
@@ -249,11 +287,6 @@ Mas como vamos salvar a senha do usuário no banco de dados? Não é uma boa pr�
   
 Está na hora de cuidar da classe usuário. Preciso que o Spring Security identifique essa classe. Que ele saiba, por exemplo, que o atributo login é o campo login. A forma de fazer isso é implementando a interface <i>UserDetails</i> e, por consequência, os seus métodos. Fiz algumas alterações nos métodos e pronto. A classe Usuário está seguindo o padrão do Spring.
 </p>
-
-<div align="center">
-  <img alt="Imagem de exemplo - Spring Security" src="" width="500px" heigth="500px"/>
-  <p></p>
-</div>
 
 <h4>2.4 - Gerando Tokens JWT</h4>
 <p>Agora o nosso foco será ter o token no retorno da requisição. 
